@@ -1,6 +1,6 @@
 {
-  "name": "mern",
-  "version": "1.0.0",
+  "name": "meallogger",
+  "version": "0.0.1",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",

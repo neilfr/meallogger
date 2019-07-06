@@ -15,6 +15,18 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  findByFoodGroupId: function(req, res) {
+    // db.FoodName.findAll(req.query)
+    db.FoodName.findAll({
+      order: [["FoodDescription", "ASC"]],
+      where: {
+        foodGroupId: req.params.foodGroupId
+      }
+    })
+
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findAllDetails: function(req, res) {
     console.log("req.query is:", req.query);
     sequelize

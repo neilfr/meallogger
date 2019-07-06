@@ -3,27 +3,16 @@ import axios from "axios";
 export default {
   getFoodNames: function() {
     console.log("inside getfoodNames");
-
     return axios.get("/api/foodNames");
-    // return axios.get("https://dog.ceo/api/breeds/image/random");
-    // .then(response => {
-    //   console.log(response.data);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
+  },
+  getFoodNamesByFoodGroupId: function(foodGroupId) {
+    console.log("getFoodNamesByFoodGroupId with foodGroupId:", foodGroupId);
+    return axios.get("/api/foodNames/" + foodGroupId);
+    // return axios.get("/api/foodNames/:foodGroupId");
   },
   getFoodGroups: function() {
     console.log("inside getfoodgroups");
-
     return axios.get("/api/foodgroups");
-    // return axios.get("https://dog.ceo/api/breeds/image/random");
-    // .then(response => {
-    //   console.log(response.data);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
   },
   // Gets all books
   getBooks: function() {

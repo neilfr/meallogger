@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DeleteBtn from "../components/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
+import { DropDown } from "../components/DropDown";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
@@ -9,7 +10,9 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 
 class HealthCanadaList extends Component {
   state = {
-    foodGroups: []
+    foodGroups: [],
+    foodNames: [],
+    foodGroupId: 0
   };
 
   componentDidMount() {
@@ -44,12 +47,27 @@ class HealthCanadaList extends Component {
   //     .catch(err => console.log(err));
   // };
 
-  // handleInputChange = event => {
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
+  loadFoodNames = foodGroupId => {
+    // API.getFoodNames()
+    API.getFoodNamesByFoodGroupId(foodGroupId)
+      .then(res => {
+        console.log("res.data:", res.data);
+        console.log("foodGroupId:", foodGroupId);
+        this.setState({ foodNames: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handleInputChange = event => {
+    console.log("event:", event);
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+    this.loadFoodNames(value);
+  };
 
   // handleFormSubmit = event => {
   //   event.preventDefault();
@@ -68,25 +86,34 @@ class HealthCanadaList extends Component {
     return (
       <Container fluid>
         <Row>
-          <Jumbotron>
-            <h1>FoodGroups list</h1>
-          </Jumbotron>
+          <DropDown
+            name="foodGroupId"
+            onChange={this.handleInputChange}
+            label="Food Group"
+            value={this.state.foodGroupId}
+          >
+            {this.state.foodGroups.map(foodGroup => (
+              <option key={foodGroup.foodGroupId} value={foodGroup.foodGroupId}>
+                {foodGroup.foodGroupName}
+              </option>
+            ))}
+          </DropDown>
         </Row>
         <Row>
-          {this.state.foodGroups.length ? (
+          {this.state.foodNames.length ? (
             <List>
-              {this.state.foodGroups.map(foodGroup => (
-                <ListItem key={foodGroup.foodGroupId}>
+              {this.state.foodNames.map(foodName => (
+                <ListItem key={foodName.foodId}>
                   <strong>
-                    ID:{foodGroup.foodGroupId}
-                    Code:{foodGroup.foodGroupCode}
-                    Name:{foodGroup.foodGroupName}
+                    ID:{foodName.foodId}
+                    Code:{foodName.foodCode}
+                    Name:{foodName.foodDescription}
                   </strong>
                 </ListItem>
               ))}
             </List>
           ) : (
-            <h3>No FoodGroups to Display</h3>
+            <h3>No FoodNames to Display</h3>
           )}
         </Row>
       </Container>

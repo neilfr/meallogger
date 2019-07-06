@@ -1,19 +1,17 @@
 const router = require("express").Router();
 const foodNameController = require("../../controllers/foodnameController");
 
-// Matches with "/api/foodgroup"
+// Matches with "/api/foodName"
 // router
 //   .route("/")
-//   .get(foodGroupController.findAll)
-//   .post(foodGroupController.create);
+//   .get(foodNameController.findAll)
+//   .post(foodNameController.create);
 router.route("/").get(foodNameController.findAll);
 router.route("/details").get(foodNameController.findAllDetails);
 
-// Matches with "/api/foodgroup/:id"
-// router
-//   .route("/:id")
-//   .get(foodGroupController.findById)
-//   .put(foodGroupController.update)
-//   .delete(foodGroupController.remove);
+// Matches with "/api/foodName/:foodGroupId"
+router.route("/:foodGroupId").get(foodNameController.findByFoodGroupId);
+//   .put(foodNameController.update)
+//   .delete(foodNameController.remove);
 
 module.exports = router;
