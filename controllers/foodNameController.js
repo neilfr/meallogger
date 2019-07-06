@@ -17,13 +17,23 @@ module.exports = {
   },
   findByFoodGroupId: function(req, res) {
     // db.FoodName.findAll(req.query)
-    db.FoodName.findAll({
-      order: [["FoodDescription", "ASC"]],
-      where: {
-        foodGroupId: req.params.foodGroupId
-      }
-    })
-
+    // db.FoodName.findAll({
+    //   order: [["FoodDescription", "ASC"]],
+    //   where: {
+    //     foodGroupId: req.params.foodGroupId
+    //   }
+    // })
+    sequelize
+      .query(
+        // "SELECT foodname.FoodID, foodname.FoodCode, foodname.FoodGroupID, foodname.FoodDescription, favouritefoods.FoodID as Favourite " +
+        "SELECT foodname.foodId, foodname.foodCode, foodname.foodGroupId, foodname.foodDescription, favouritefoods.foodId as favourite " +
+          "FROM foodname " +
+          "LEFT JOIN favouritefoods " +
+          "ON foodname.foodId=favouritefoods.foodId " +
+          "WHERE foodname.foodGroupID=22 " +
+          "ORDER BY foodname.foodId ASC ",
+        { type: sequelize.QueryTypes.SELECT }
+      )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

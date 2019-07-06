@@ -108,6 +108,11 @@ class HealthCanadaList extends Component {
                     ID:{foodName.foodId}
                     Code:{foodName.foodCode}
                     Name:{foodName.foodDescription}
+                    {foodName.favourite === null ? (
+                      <i className="fas fa-plus-circle" />
+                    ) : (
+                      <i className="fas fa-check-circle" />
+                    )}
                   </strong>
                 </ListItem>
               ))}
