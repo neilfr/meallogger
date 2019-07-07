@@ -1,11 +1,11 @@
 const router = require("express").Router();
-// const bookRoutes = require("./books");
+
 const foodGroupRoutes = require("./foodgroups");
 const foodNameRoutes = require("./foodnames");
+const favouriteFoodRoutes = require("./favouritefoods");
 
-// Book routes
-// router.use("/books", bookRoutes);
 router.use("/foodgroups", foodGroupRoutes);
 router.use("/foodnames", foodNameRoutes);
+router.use("/favouritefoods", favouriteFoodRoutes);
 
 module.exports = router;

@@ -10,6 +10,19 @@ User.findAll().then(users => {
 
 // Defining methods for the foodNameController
 module.exports = {
+  addFavouriteById: function(req, res) {
+    console.log("HELLLLLOOOOOOOOOO:", req.params.foodId);
+    db.FoodName.findAll(req.query)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+    // sequelize
+    //   .query(
+    //     // "SELECT foodname.FoodID, foodname.FoodCode, foodname.FoodGroupID, foodname.FoodDescription, favouritefoods.FoodID as Favourite " +
+    //     "INSERT INTO favouriteFood " + "(1,7) "
+    //   )
+    //   .then(dbModel => res.json(dbModel))
+    //   .catch(err => res.status(422).json(err));
+  },
   findAll: function(req, res) {
     db.FoodName.findAll(req.query)
       .then(dbModel => res.json(dbModel))
@@ -26,13 +39,16 @@ module.exports = {
     sequelize
       .query(
         // "SELECT foodname.FoodID, foodname.FoodCode, foodname.FoodGroupID, foodname.FoodDescription, favouritefoods.FoodID as Favourite " +
-        "SELECT foodname.foodId, foodname.foodCode, foodname.foodGroupId, foodname.foodDescription, favouritefoods.foodId as favourite " +
+        "SELECT foodname.foodId, foodname.foodCode, foodname.foodGroupId, foodname.foodDescription, favouritefood.foodId as favourite " +
           "FROM foodname " +
-          "LEFT JOIN favouritefoods " +
-          "ON foodname.foodId=favouritefoods.foodId " +
-          "WHERE foodname.foodGroupID=22 " +
+          "LEFT JOIN favouritefood " +
+          "ON foodname.foodId=favouritefood.foodId " +
+          "WHERE foodname.foodGroupID=? " +
           "ORDER BY foodname.foodId ASC ",
-        { type: sequelize.QueryTypes.SELECT }
+        {
+          replacements: [req.params.foodGroupId],
+          type: sequelize.QueryTypes.SELECT
+        }
       )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

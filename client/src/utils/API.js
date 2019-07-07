@@ -14,6 +14,14 @@ export default {
     console.log("inside getfoodgroups");
     return axios.get("/api/foodgroups");
   },
+  addFavouriteFood: function(favouriteFood) {
+    console.log("in api, add favourite food!:", JSON.stringify(favouriteFood));
+    return axios.post("api/favouriteFoods/", favouriteFood);
+  },
+  unFavouriteFood: function(favouriteFood) {
+    console.log("in api, add favourite food!:", JSON.stringify(favouriteFood));
+    return axios.delete("api/favouriteFoods/", { data: favouriteFood });
+  },
   // Gets all books
   getBooks: function() {
     return axios.get("/api/books");

@@ -10,6 +10,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 
 class HealthCanadaList extends Component {
   state = {
+    userId: 1,
     foodGroups: [],
     foodNames: [],
     foodGroupId: 0
@@ -26,19 +27,6 @@ class HealthCanadaList extends Component {
         console.log("res.data:", res.data);
       })
       .catch(err => console.log(err));
-    // this.setState({
-    //   foodGroups: [
-    //     {
-    //       id: 1,
-    //       code: 1,
-    //       name: "veggies"
-    //     },
-    //     {
-    //       id: 2,
-    //       code: 2,
-    //       name: "meats"
-    //     }
-    //   ]
   };
 
   // deleteBook = id => {
@@ -67,6 +55,20 @@ class HealthCanadaList extends Component {
       [name]: value
     });
     this.loadFoodNames(value);
+  };
+
+  addFavouriteFood = favouriteFood => {
+    console.log("adding favourite food:", JSON.stringify(favouriteFood));
+    API.addFavouriteFood(favouriteFood).then(res => {
+      console.log("got something back:", res.data);
+    });
+  };
+
+  unFavouriteFood = favouriteFood => {
+    console.log("remove favourite food:", JSON.stringify(favouriteFood));
+    API.unFavouriteFood(favouriteFood).then(res => {
+      console.log("got something back:", res.data);
+    });
   };
 
   // handleFormSubmit = event => {
@@ -104,15 +106,32 @@ class HealthCanadaList extends Component {
             <List>
               {this.state.foodNames.map(foodName => (
                 <ListItem key={foodName.foodId}>
+                  {foodName.favourite === null ? (
+                    <i
+                      className="far fa-star"
+                      onClick={() => {
+                        this.addFavouriteFood({
+                          userId: this.state.userId,
+                          foodId: foodName.foodId
+                        });
+                      }}
+                    />
+                  ) : (
+                    <i
+                      className="fas fa-star"
+                      onClick={() => {
+                        this.unFavouriteFood({
+                          userId: this.state.userId,
+                          foodId: foodName.foodId
+                        });
+                      }}
+                    />
+                  )}
+                  s
                   <strong>
                     ID:{foodName.foodId}
                     Code:{foodName.foodCode}
                     Name:{foodName.foodDescription}
-                    {foodName.favourite === null ? (
-                      <i className="fas fa-plus-circle" />
-                    ) : (
-                      <i className="fas fa-check-circle" />
-                    )}
                   </strong>
                 </ListItem>
               ))}
