@@ -59,16 +59,26 @@ class HealthCanadaList extends Component {
 
   addFavouriteFood = favouriteFood => {
     console.log("adding favourite food:", JSON.stringify(favouriteFood));
-    API.addFavouriteFood(favouriteFood).then(res => {
-      console.log("got something back:", res.data);
-    });
+    API.addFavouriteFood(favouriteFood)
+      .then(res => {
+        console.log("got something back:", res.data);
+      })
+      .then(() => {
+        const foodGroup = this.state.foodGroupId;
+        this.loadFoodNames(foodGroup);
+      });
   };
 
   unFavouriteFood = favouriteFood => {
     console.log("remove favourite food:", JSON.stringify(favouriteFood));
-    API.unFavouriteFood(favouriteFood).then(res => {
-      console.log("got something back:", res.data);
-    });
+    API.unFavouriteFood(favouriteFood)
+      .then(res => {
+        console.log("got something back:", res.data);
+      })
+      .then(() => {
+        const foodGroup = this.state.foodGroupId;
+        this.loadFoodNames(foodGroup);
+      });
   };
 
   // handleFormSubmit = event => {
