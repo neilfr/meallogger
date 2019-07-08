@@ -34,9 +34,27 @@ class ConsumptionLog extends Component {
   //   value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
   // };
 
-  addConsumptionLogEntry = consumptionLogEntry => {
+  addConsumptionLogEntry = () => {
+    const consumptionLogEntry = {
+      consumptionLogId: null,
+      userId: this.state.userId,
+      foodId: 0,
+      quantity: 100,
+      logDate: null //TODO: populate datetime
+    };
     console.log("adding log entry:", JSON.stringify(consumptionLogEntry));
     API.addConsumptionLogEntry(consumptionLogEntry)
+      .then(res => {
+        console.log("got something back:", res.data);
+      })
+      .then(() => {
+        this.loadConsumptionLog();
+      });
+  };
+
+  deleteConsumptionLogEntry = consumptionLogId => {
+    console.log("deleting entry");
+    API.deleteConsumptionLogEntry(consumptionLogId)
       .then(res => {
         console.log("got something back:", res.data);
       })
@@ -61,6 +79,13 @@ class ConsumptionLog extends Component {
   render() {
     return (
       <Container fluid>
+        <button
+          onClick={() => {
+            this.addConsumptionLogEntry();
+          }}
+        >
+          New Log Entry
+        </button>
         <Row>
           {this.state.consumptionLog.length ? (
             <List>
@@ -73,6 +98,13 @@ class ConsumptionLog extends Component {
                     Quantity:{logEntry.quantity}
                     Date:{logEntry.logDate}
                   </strong>
+                  <button
+                    onClick={() => {
+                      this.deleteConsumptionLogEntry(logEntry.consumptionLogId);
+                    }}
+                  >
+                    X
+                  </button>
                 </ListItem>
               ))}
             </List>

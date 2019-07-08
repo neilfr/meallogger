@@ -3,6 +3,35 @@ const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
 
 module.exports = {
+  create: function(req, res) {
+    sequelize
+      .query(
+        "INSERT INTO consumptionLog(consumptionLogId,userId,foodId,quantity,logDate) " +
+          " VALUES(NULL,?,?,?,NOW())",
+        {
+          replacements: [
+            req.body.userId,
+            req.body.foodId,
+            req.body.quantity
+            // TODO... incorporate req.body.logDate
+          ]
+        }
+      )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  delete: function(req, res) {
+    sequelize
+      .query(
+        "DELETE FROM consumptionLog " +
+          "WHERE consumptionLog.consumptionLogId=? ",
+        {
+          replacements: [req.body.consumptionLogId]
+        }
+      )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findByUserId: function(req, res) {
     sequelize
       .query(

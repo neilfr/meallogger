@@ -5,7 +5,7 @@ const sequelize = require("../config/connection.js");
 module.exports = {
   create: function(req, res) {
     sequelize
-      .query("INSERT INTO favouritefood VALUES(?,?)", {
+      .query("INSERT INTO favouritefood(userId,foodId) VALUES(?,?)", {
         replacements: [req.body.userId, req.body.foodId]
       })
       .then(dbModel => res.json(dbModel))

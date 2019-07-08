@@ -6,8 +6,12 @@ const consumptionLogController = require("../../controllers/consumptionLogContro
 //   .route("/")
 //   .get(foodNameController.findAll)
 //   .post(foodNameController.create);
-router.route("/").get(consumptionLogController.findAll);
+router
+  .route("/")
+  .get(consumptionLogController.findAll)
+  .post(consumptionLogController.create);
 
+router.route("/:consumptionLogId").delete(consumptionLogController.delete);
 router.route("/:userId").get(consumptionLogController.findByUserId);
 // .post(favouriteFoodController.create)
 // .delete(favouriteFoodController.delete);

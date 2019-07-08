@@ -1,6 +1,13 @@
 import axios from "axios";
 
 export default {
+  deleteConsumptionLogEntry: function(consumptionLogId) {
+    return axios.delete("/api/consumptionLog/" + consumptionLogId);
+  },
+  addConsumptionLogEntry: function(logEntry) {
+    console.log("in api, add logentry!:", JSON.stringify(logEntry));
+    return axios.post("api/consumptionLog/", logEntry);
+  },
   getConsumptionLogByUserId: function(userId) {
     console.log("inside get log");
     return axios.get("api/consumptionLog/" + userId);
