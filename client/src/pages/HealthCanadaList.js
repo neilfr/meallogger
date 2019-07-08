@@ -54,7 +54,7 @@ class HealthCanadaList extends Component {
     this.setState({
       [name]: value
     });
-    this.loadFoodNames(value);
+    value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
   };
 
   addFavouriteFood = favouriteFood => {
@@ -137,7 +137,6 @@ class HealthCanadaList extends Component {
                       }}
                     />
                   )}
-                  s
                   <strong>
                     ID:{foodName.foodId}
                     Code:{foodName.foodCode}
@@ -147,7 +146,7 @@ class HealthCanadaList extends Component {
               ))}
             </List>
           ) : (
-            <h3>No FoodNames to Display</h3>
+            <h3>Search or select food group</h3>
           )}
         </Row>
       </Container>

@@ -11,7 +11,6 @@ User.findAll().then(users => {
 // Defining methods for the foodNameController
 module.exports = {
   addFavouriteById: function(req, res) {
-    console.log("HELLLLLOOOOOOOOOO:", req.params.foodId);
     db.FoodName.findAll(req.query)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -57,10 +56,10 @@ module.exports = {
     console.log("req.query is:", req.query);
     sequelize
       .query(
-        "SELECT foodname.FoodID,foodname.FoodDescription,foodgroup.FoodGroupName " +
+        "SELECT foodname.foodID,foodname.foodDescription,foodgroup.foodGroupName " +
           "FROM foodname " +
           "INNER JOIN foodgroup " +
-          "ON foodname.FoodGroupID=foodgroup.FoodGroupID"
+          "ON foodname.foodGroupID=foodgroup.foodGroupID"
       )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

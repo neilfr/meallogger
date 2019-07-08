@@ -1,6 +1,10 @@
 import axios from "axios";
 
 export default {
+  getConsumptionLogByUserId: function(userId) {
+    console.log("inside get log");
+    return axios.get("api/consumptionLog/" + userId);
+  },
   getFoodNames: function() {
     console.log("inside getfoodNames");
     return axios.get("/api/foodNames");

@@ -15,8 +15,8 @@ module.exports = {
     sequelize
       .query(
         "DELETE FROM favouritefood " +
-          "WHERE favouritefood.UserId=? " +
-          "AND favouritefood.FoodId=?",
+          "WHERE favouritefood.userId=? " +
+          "AND favouritefood.foodId=?",
         {
           replacements: [req.body.userId, req.body.foodId]
         }
@@ -27,7 +27,7 @@ module.exports = {
   findAll: function(req, res) {
     sequelize
       .query(
-        "SELECT favouritefood.UserID,favouritefood.FoodID " +
+        "SELECT favouritefood.userID,favouritefood.foodID " +
           "FROM favouritefood ",
         {
           type: sequelize.QueryTypes.SELECT

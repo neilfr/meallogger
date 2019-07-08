@@ -1,0 +1,18 @@
+const router = require("express").Router();
+const consumptionLogController = require("../../controllers/consumptionLogController");
+
+// Matches with "/api/foodName"
+// router
+//   .route("/")
+//   .get(foodNameController.findAll)
+//   .post(foodNameController.create);
+router.route("/").get(consumptionLogController.findAll);
+
+router.route("/:userId").get(consumptionLogController.findByUserId);
+// .post(favouriteFoodController.create)
+// .delete(favouriteFoodController.delete);
+// router.route("/:id").post(favouriteController.addFavouriteById);
+// matches with "/api/foodName/addFavouriteById/:foodId"
+// router.route("/addFavouriteById").get(foodNameController.addFavouriteById);
+
+module.exports = router;
