@@ -12,6 +12,7 @@ router
   .post(consumptionLogController.create);
 
 router.route("/:consumptionLogId").delete(consumptionLogController.delete);
+
 router.route("/:userId").get(consumptionLogController.findByUserId);
 // .post(favouriteFoodController.create)
 // .delete(favouriteFoodController.delete);

@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default {
   deleteConsumptionLogEntry: function(consumptionLogId) {
+    console.log("inside client api for delete with:", consumptionLogId);
     return axios.delete("/api/consumptionLog/" + consumptionLogId);
   },
   addConsumptionLogEntry: function(logEntry) {

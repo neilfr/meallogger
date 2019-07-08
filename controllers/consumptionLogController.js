@@ -21,12 +21,13 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   delete: function(req, res) {
+    console.log("inside log controller delete with req.params:", req.params);
     sequelize
       .query(
         "DELETE FROM consumptionLog " +
           "WHERE consumptionLog.consumptionLogId=? ",
         {
-          replacements: [req.body.consumptionLogId]
+          replacements: [req.params.consumptionLogId]
         }
       )
       .then(dbModel => res.json(dbModel))
