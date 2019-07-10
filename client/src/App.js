@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HealthCanadaList from "./pages/HealthCanadaList";
 import FoodNames from "./pages/FoodNames";
 import ConsumptionLog from "./pages/ConsumptionLog";
+import ConsumptionLogEntry from "./pages/ConsumptionLogEntry";
+
 import Books from "./pages/Books";
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
@@ -18,7 +20,11 @@ function App() {
           <Route exact path="/foodgroups" component={HealthCanadaList} />
           <Route exact path="/foodnames" component={FoodNames} />
           <Route exact path="/consumptionlog" component={ConsumptionLog} />
-
+          <Route
+            exact
+            path="/consumptionlogentry"
+            component={ConsumptionLogEntry}
+          />
           <Route component={NoMatch} />
         </Switch>
       </div>
