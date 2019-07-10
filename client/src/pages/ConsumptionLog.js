@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { LogItem } from "../components/LogItem";
+import { LogEntry } from "../components/LogEntry";
 
 class ConsumptionLog extends Component {
   state = {
     userId: 1,
     consumptionLog: [],
-    currentLogEntry: {}
+    currentLogEntry: null
   };
 
   componentDidMount() {
@@ -149,11 +150,15 @@ class ConsumptionLog extends Component {
           <div className="col">
             {this.state.currentLogEntry ? (
               <div>
+                {console.log("current log entry:", this.state.currentLogEntry)}
                 LogID:{this.state.currentLogEntry.consumptionLogId}
                 FoodID:{this.state.currentLogEntry.foodId}
                 FoodDescription:{this.state.currentLogEntry.foodDescription}
                 Quantity:{this.state.currentLogEntry.quantity}
-                Date:{this.state.currentLogEntry.logDate}
+                <LogEntry
+                  key={this.state.currentLogEntry.consumptionLogId}
+                  logEntry={this.state.currentLogEntry}
+                />
               </div>
             ) : (
               <h3>select a log entry to edit</h3>
