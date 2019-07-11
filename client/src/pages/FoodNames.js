@@ -68,11 +68,6 @@ class FoodNames extends Component {
     return (
       <Container fluid>
         <Row>
-          <Jumbotron>
-            <h1>FoodNames list</h1>
-          </Jumbotron>
-        </Row>
-        <Row>
           {this.state.foodNames.length ? (
             <List>
               {this.state.foodNames.map(foodName => (

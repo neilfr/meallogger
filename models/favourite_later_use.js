@@ -1,3 +1,6 @@
+// not currently using model for favourites
+// using sequelize.query with SQL directly in the controller
+
 const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
 // const FoodGroup = require("./foodgroup");

@@ -2,39 +2,13 @@ const db = require("../models");
 const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
 
-/*
-User.findAll().then(users => {
-  console.log("All users:", JSON.stringify(users, null, 4));
-});
-*/
-
-// Defining methods for the foodNameController
 module.exports = {
-  addFavouriteById: function(req, res) {
-    db.FoodName.findAll(req.query)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-    // sequelize
-    //   .query(
-    //     // "SELECT foodname.FoodID, foodname.FoodCode, foodname.FoodGroupID, foodname.FoodDescription, favouritefoods.FoodID as Favourite " +
-    //     "INSERT INTO favouriteFood " + "(1,7) "
-    //   )
-    //   .then(dbModel => res.json(dbModel))
-    //   .catch(err => res.status(422).json(err));
-  },
   findAll: function(req, res) {
     db.FoodName.findAll(req.query)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findByFoodGroupId: function(req, res) {
-    // db.FoodName.findAll(req.query)
-    // db.FoodName.findAll({
-    //   order: [["FoodDescription", "ASC"]],
-    //   where: {
-    //     foodGroupId: req.params.foodGroupId
-    //   }
-    // })
     sequelize
       .query(
         // "SELECT foodname.FoodID, foodname.FoodCode, foodname.FoodGroupID, foodname.FoodDescription, favouritefoods.FoodID as Favourite " +
@@ -51,28 +25,5 @@ module.exports = {
       )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-  },
-  findAllDetails: function(req, res) {
-    console.log("req.query is:", req.query);
-    sequelize
-      .query(
-        "SELECT foodname.foodID,foodname.foodDescription,foodgroup.foodGroupName " +
-          "FROM foodname " +
-          "INNER JOIN foodgroup " +
-          "ON foodname.foodGroupID=foodgroup.foodGroupID"
-      )
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
   }
-
-  // findAllDetails: function(req, res) {
-  //   console.log("req.query is:", req.query);
-  //   db.FoodName.findAll({
-  //     where: {
-  //       foodId: 2
-  //     }
-  //   })
-  //     .then(dbModel => res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // }
 };

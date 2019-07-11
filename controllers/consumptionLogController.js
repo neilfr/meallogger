@@ -1,19 +1,20 @@
 const db = require("../models");
 const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
+const moment = require("moment");
 
 module.exports = {
   create: function(req, res) {
     sequelize
       .query(
         "INSERT INTO consumptionLog(consumptionLogId,userId,foodId,quantity,logDate) " +
-          " VALUES(NULL,?,?,?,NOW())",
+          " VALUES(NULL,?,?,?,?)",
         {
           replacements: [
             req.body.userId,
             req.body.foodId,
-            req.body.quantity
-            // TODO... incorporate req.body.logDate
+            req.body.quantity,
+            moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss")
           ]
         }
       )
@@ -34,13 +35,18 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findByUserId: function(req, res) {
+    // energy nutrient id = 208, symbol KCAL, in kCal
+    // potassium nutrient id = 306, symbol K, in mg
     sequelize
       .query(
-        "SELECT c.consumptionLogId, c.userId, c.foodId, c.quantity, c.logDate, f.foodDescription " +
+        "SELECT c.consumptionLogId, c.userId, c.foodId, c.quantity, c.logDate, f.foodCode, f.foodDescription, n.nutrientValue " +
           "FROM consumptionlog c " +
           "INNER JOIN foodname f " +
           "ON c.foodId=f.foodId " +
-          "WHERE userID=?",
+          "INNER JOIN nutrientamount n " +
+          "ON c.foodId=n.foodId " +
+          "WHERE userID=? " +
+          "AND n.nutrientID=208",
         {
           type: sequelize.QueryTypes.SELECT,
           replacements: [req.params.userId]
@@ -61,26 +67,4 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }
-  // ,
-  // create: function(req, res) {
-  //   sequelize
-  //     .query("INSERT INTO favouritefood VALUES(?,?)", {
-  //       replacements: [req.body.userId, req.body.foodId]
-  //     })
-  //     .then(dbModel => res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // },
-  // delete: function(req, res) {
-  //   sequelize
-  //     .query(
-  //       "DELETE FROM favouritefood " +
-  //         "WHERE favouritefood.userId=? " +
-  //         "AND favouritefood.foodId=?",
-  //       {
-  //         replacements: [req.body.userId, req.body.foodId]
-  //       }
-  //     )
-  //     .then(dbModel => res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // }
 };

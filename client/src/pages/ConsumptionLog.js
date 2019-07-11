@@ -6,6 +6,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { LogItem } from "../components/LogItem";
 import { LogEntry } from "../components/LogEntry";
+import moment from "moment";
 
 class ConsumptionLog extends Component {
   state = {
@@ -38,12 +39,13 @@ class ConsumptionLog extends Component {
   // };
 
   addConsumptionLogEntry = () => {
+    const now = new Date();
     const consumptionLogEntry = {
       consumptionLogId: null,
       userId: this.state.userId,
       foodId: 0,
       quantity: 100,
-      logDate: null //TODO: populate datetime
+      logDate: now
     };
     console.log("adding log entry:", JSON.stringify(consumptionLogEntry));
     API.addConsumptionLogEntry(consumptionLogEntry)

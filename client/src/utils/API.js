@@ -3,23 +3,23 @@ import axios from "axios";
 export default {
   deleteConsumptionLogEntry: function(consumptionLogId) {
     console.log("inside client api for delete with:", consumptionLogId);
-    return axios.delete("/api/consumptionLog/" + consumptionLogId);
+    return axios.delete("/api/consumptionlog/" + consumptionLogId);
   },
   addConsumptionLogEntry: function(logEntry) {
     console.log("in api, add logentry!:", JSON.stringify(logEntry));
-    return axios.post("api/consumptionLog/", logEntry);
+    return axios.post("api/consumptionlog/", logEntry);
   },
   getConsumptionLogByUserId: function(userId) {
     console.log("inside get log");
-    return axios.get("api/consumptionLog/" + userId);
+    return axios.get("api/consumptionlog/" + userId);
   },
   getFoodNames: function() {
-    console.log("inside getfoodNames");
-    return axios.get("/api/foodNames");
+    console.log("inside getfoodnames");
+    return axios.get("/api/foodnames");
   },
   getFoodNamesByFoodGroupId: function(foodGroupId) {
     console.log("getFoodNamesByFoodGroupId with foodGroupId:", foodGroupId);
-    return axios.get("/api/foodNames/" + foodGroupId);
+    return axios.get("/api/foodnames/" + foodGroupId);
     // return axios.get("/api/foodNames/:foodGroupId");
   },
   getFoodGroups: function() {
@@ -28,26 +28,10 @@ export default {
   },
   addFavouriteFood: function(favouriteFood) {
     console.log("in api, add favourite food!:", JSON.stringify(favouriteFood));
-    return axios.post("api/favouriteFoods/", favouriteFood);
+    return axios.post("api/favouritefoods/", favouriteFood);
   },
   unFavouriteFood: function(favouriteFood) {
     console.log("in api, add favourite food!:", JSON.stringify(favouriteFood));
-    return axios.delete("api/favouriteFoods/", { data: favouriteFood });
-  },
-  // Gets all books
-  getBooks: function() {
-    return axios.get("/api/books");
-  },
-  // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/books/" + id);
-  },
-  // Deletes the book with the given id
-  deleteBook: function(id) {
-    return axios.delete("/api/books/" + id);
-  },
-  // Saves a book to the database
-  saveBook: function(bookData) {
-    return axios.post("/api/books", bookData);
+    return axios.delete("api/favouritefoods/", { data: favouriteFood });
   }
 };
