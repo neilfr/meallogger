@@ -22,11 +22,13 @@ export function LogEntry(props) {
         name="quantity"
         type="number"
         defaultValue={props.logEntry.quantity}
+        onChange={props.onChange}
       />
       <br />
-      Calories: {props.logEntry.quantity}
+      Calories: {(props.logEntry.calories * props.logEntry.quantity) / 100}
       <br />
-      <button>Close</button>
+      <button onClick={props.saveClick}>Save</button>
+      <button onClick={props.cancelClick}>Cancel</button>
     </div>
   );
 }

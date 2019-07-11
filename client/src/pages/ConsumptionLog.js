@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { List, ListItem } from "../components/List";
 import { LogEntry } from "../components/LogEntry";
+import Moment from "moment";
 
 class ConsumptionLog extends Component {
   state = {
@@ -19,7 +20,7 @@ class ConsumptionLog extends Component {
   loadConsumptionLog = () => {
     API.getConsumptionLogByUserId(this.state.userId)
       .then(res => {
-        this.setState({ consumptionLog: res.data });
+        this.setState({ currentLogEntry: null, consumptionLog: res.data });
         console.log("res.data:", res.data);
       })
       .catch(err => console.log(err));
@@ -44,6 +45,16 @@ class ConsumptionLog extends Component {
     //   [name]: value
     // });
     // value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
+  };
+
+  updateConsumptionLogEntry = () => {
+    API.updateConsumptionLogEntry(this.state.currentLogEntry)
+      .then(res => {
+        console.log("got something back:", res.data);
+      })
+      .then(() => {
+        this.loadConsumptionLog();
+      });
   };
 
   addConsumptionLogEntry = () => {
@@ -84,18 +95,18 @@ class ConsumptionLog extends Component {
     this.setState({ currentLogEntry: test[0] });
   };
 
-  //
   // handleFormSubmit = event => {
   //   event.preventDefault();
-  //   if (this.state.title && this.state.author) {
-  //     API.saveLogEntry({
-  //       title: this.state.title,
-  //       author: this.state.author,
-  //       synopsis: this.state.synopsis
-  //     })
-  //       .then(res => this.loadConsumptionLog())
-  //       .catch(err => console.log(err));
-  //   }
+  //   console.log("hit form submit");
+  //   // if (this.state.title && this.state.author) {
+  //   //   API.saveLogEntry({
+  //   //     title: this.state.title,
+  //   //     author: this.state.author,
+  //   //     synopsis: this.state.synopsis
+  //   //   })
+  //   //     .then(res => this.loadConsumptionLog())
+  //   //     .catch(err => console.log(err));
+  //   // }
   // };
 
   render() {
@@ -114,7 +125,7 @@ class ConsumptionLog extends Component {
                 New Log Entry
               </button>
             </div>
-            {/* // row */}
+            {/* end row */}
 
             <div className="row">
               {this.state.consumptionLog.length ? (
@@ -128,12 +139,16 @@ class ConsumptionLog extends Component {
                             this.setCurrentLogEntry(logEntry.consumptionLogId);
                           }}
                         >
-                          LogID:{logEntry.consumptionLogId}
-                          FoodID:{logEntry.foodId}
-                          FoodDescription:{logEntry.foodDescription}
-                          Quantity:{logEntry.quantity}
-                          Date:{logEntry.logDate}
-                          {/* <LogItem key={logEntry.consumptionLogId} /> */}
+                          {/* LogID:{logEntry.consumptionLogId} */}
+                          {/* FoodID:{logEntry.foodId} */}
+                          Date:{" "}
+                          {Moment(logEntry.logDate).format(
+                            "YYYY-MM-DD hh:mm a"
+                          )}
+                          <br />
+                          {logEntry.foodDescription} Qty (mg):{" "}
+                          {logEntry.quantity} Calories:{" "}
+                          {(logEntry.calories * logEntry.quantity) / 100}
                         </div>
                         <button
                           onClick={() => {
@@ -161,14 +176,12 @@ class ConsumptionLog extends Component {
             {this.state.currentLogEntry ? (
               <div>
                 {console.log("current log entry:", this.state.currentLogEntry)}
-                LogID:{this.state.currentLogEntry.consumptionLogId}
-                FoodID:{this.state.currentLogEntry.foodId}
-                FoodDescription:{this.state.currentLogEntry.foodDescription}
-                Quantity:{this.state.currentLogEntry.quantity}
                 <LogEntry
                   key={this.state.currentLogEntry.consumptionLogId}
                   logEntry={this.state.currentLogEntry}
                   onChange={this.handleInputChange}
+                  saveClick={this.updateConsumptionLogEntry}
+                  cancelClick={this.loadConsumptionLog}
                 />
               </div>
             ) : (

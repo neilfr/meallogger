@@ -1,7 +1,7 @@
 const db = require("../models");
 const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
-const moment = require("moment");
+const Moment = require("moment");
 
 module.exports = {
   create: function(req, res) {
@@ -14,7 +14,7 @@ module.exports = {
             req.body.userId,
             req.body.foodId,
             req.body.quantity,
-            moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss")
+            Moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss")
           ]
         }
       )
@@ -39,7 +39,7 @@ module.exports = {
     // potassium nutrient id = 306, symbol K, in mg
     sequelize
       .query(
-        "SELECT c.consumptionLogId, c.userId, c.foodId, c.quantity, c.logDate, f.foodCode, f.foodDescription, n.nutrientValue " +
+        "SELECT c.consumptionLogId, c.userId, c.foodId, c.quantity, c.logDate, f.foodCode, f.foodDescription, n.nutrientValue AS calories " +
           "FROM consumptionlog c " +
           "INNER JOIN foodname f " +
           "ON c.foodId=f.foodId " +
@@ -62,6 +62,25 @@ module.exports = {
           "FROM consumptionlog ",
         {
           type: sequelize.QueryTypes.SELECT
+        }
+      )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  update: function(req, res) {
+    console.log("update payload:", JSON.stringify(req.body));
+    sequelize
+      .query(
+        "UPDATE consumptionlog " +
+          "SET foodId=?, quantity=?, logDate=? " +
+          "WHERE consumptionLogId=?",
+        {
+          replacements: [
+            req.body.foodId,
+            req.body.quantity,
+            moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss"),
+            req.body.consumptionLogId
+          ]
         }
       )
       .then(dbModel => res.json(dbModel))
