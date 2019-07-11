@@ -6,7 +6,6 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { LogItem } from "../components/LogItem";
 import { LogEntry } from "../components/LogEntry";
-import moment from "moment";
 
 class ConsumptionLog extends Component {
   state = {
@@ -29,14 +28,26 @@ class ConsumptionLog extends Component {
       .catch(err => console.log(err));
   };
 
-  // handleInputChange = event => {
-  //   console.log("event:", event);
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  //   value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
-  // };
+  handleInputChange = event => {
+    console.log("event:", event);
+    const { name, value } = event.target;
+    console.log("name", name);
+    console.log("value", value);
+    console.log(
+      "current log entry:",
+      JSON.stringify(this.state.currentLogEntry)
+    );
+    const logEntry = this.state.currentLogEntry;
+    logEntry[name] = value;
+    console.log("new log entry:", JSON.stringify(logEntry));
+    this.setState({ currentLogEntry: logEntry });
+
+    // TODO: UPDATE THE DATABASE with the new log entry
+    // this.setState({
+    //   [name]: value
+    // });
+    // value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
+  };
 
   addConsumptionLogEntry = () => {
     const now = new Date();
@@ -77,18 +88,18 @@ class ConsumptionLog extends Component {
     this.setState({ currentLogEntry: test[0] });
   };
 
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   if (this.state.title && this.state.author) {
-  //     API.saveBook({
-  //       title: this.state.title,
-  //       author: this.state.author,
-  //       synopsis: this.state.synopsis
-  //     })
-  //       .then(res => this.loadBooks())
-  //       .catch(err => console.log(err));
-  //   }
-  // };
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.title && this.state.author) {
+      API.saveBook({
+        title: this.state.title,
+        author: this.state.author,
+        synopsis: this.state.synopsis
+      })
+        .then(res => this.loadBooks())
+        .catch(err => console.log(err));
+    }
+  };
 
   render() {
     return (
@@ -160,6 +171,7 @@ class ConsumptionLog extends Component {
                 <LogEntry
                   key={this.state.currentLogEntry.consumptionLogId}
                   logEntry={this.state.currentLogEntry}
+                  onChange={this.handleInputChange}
                 />
               </div>
             ) : (

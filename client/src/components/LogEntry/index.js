@@ -1,24 +1,32 @@
 import React from "react";
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from "constants";
-
-// This file exports the Input, TextArea, and FormBtn components
 
 export function LogEntry(props) {
-  console.log("in log entry, props are:", props);
-  const logEntry = props.logEntry.quantity;
-  console.log("props.logEntry.quantity is:", logEntry);
-  const foo = JSON.stringify(props);
+  console.log("props is:", props);
   return (
     <div>
-      <h2>Inside LogEntry</h2>
-      <p>foo:{foo}</p>
-      <p>quantity:{props.logEntry.quantity}</p>
-      <input type="number" defaultValue={props.logEntry.quantity} />
-      <p>date:{props.logEntry.logDate}</p>
+      <br />
+      Date:
       <input
+        name="logDate"
         type="datetime-local"
         defaultValue={props.logEntry.logDate.slice(0, 16)}
+        onChange={props.onChange}
       />
+      <br />
+      Food Code: {props.logEntry.foodCode}
+      <br />
+      Food Description: {props.logEntry.foodDescription}
+      <br />
+      Quantity (mg):
+      <input
+        name="quantity"
+        type="number"
+        defaultValue={props.logEntry.quantity}
+      />
+      <br />
+      Calories: {props.logEntry.quantity}
+      <br />
+      <button>Close</button>
     </div>
   );
 }
