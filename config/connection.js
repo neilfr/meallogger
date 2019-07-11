@@ -10,13 +10,4 @@ const sequelize = new Sequelize("meallogger_db", "root", "root", {
   }
 });
 
-// sequelize
-//   .authenticate()
-//   .then(() => {
-//     console.log("Database connection has been established successfully.");
-//   })
-//   .catch(err => {
-//     console.error("Unable to connect to the database:", err);
-//   });
-
 module.exports = sequelize;

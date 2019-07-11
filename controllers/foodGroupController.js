@@ -1,6 +1,5 @@
 const db = require("../models");
 
-// Defining methods for the foodGroupController
 module.exports = {
   findAll: function(req, res) {
     db.FoodGroup.findAll(req.query)

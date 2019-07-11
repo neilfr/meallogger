@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { DropDown } from "../components/DropDown";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import { LogItem } from "../components/LogItem";
 import { LogEntry } from "../components/LogEntry";
 
 class ConsumptionLog extends Component {
@@ -69,7 +66,6 @@ class ConsumptionLog extends Component {
   };
 
   deleteConsumptionLogEntry = consumptionLogId => {
-    console.log("deleting entry");
     API.deleteConsumptionLogEntry(consumptionLogId)
       .then(res => {
         console.log("got something back:", res.data);
@@ -88,18 +84,19 @@ class ConsumptionLog extends Component {
     this.setState({ currentLogEntry: test[0] });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadBooks())
-        .catch(err => console.log(err));
-    }
-  };
+  //
+  // handleFormSubmit = event => {
+  //   event.preventDefault();
+  //   if (this.state.title && this.state.author) {
+  //     API.saveLogEntry({
+  //       title: this.state.title,
+  //       author: this.state.author,
+  //       synopsis: this.state.synopsis
+  //     })
+  //       .then(res => this.loadConsumptionLog())
+  //       .catch(err => console.log(err));
+  //   }
+  // };
 
   render() {
     return (

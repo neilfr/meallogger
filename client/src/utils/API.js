@@ -10,7 +10,7 @@ export default {
     return axios.post("api/consumptionlog/", logEntry);
   },
   getConsumptionLogByUserId: function(userId) {
-    console.log("inside get log");
+    console.log("inside get log with userId:", userId);
     return axios.get("api/consumptionlog/" + userId);
   },
   getFoodNames: function() {

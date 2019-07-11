@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/DeleteBtn";
-import Jumbotron from "../components/Jumbotron";
 import { DropDown } from "../components/DropDown";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import { Input, TextArea, FormBtn } from "../components/Form";
 
 class HealthCanadaList extends Component {
   state = {
@@ -28,12 +24,6 @@ class HealthCanadaList extends Component {
       })
       .catch(err => console.log(err));
   };
-
-  // deleteBook = id => {
-  //   API.deleteBook(id)
-  //     .then(res => this.loadBooks())
-  //     .catch(err => console.log(err));
-  // };
 
   loadFoodNames = foodGroupId => {
     // API.getFoodNames()
@@ -81,23 +71,10 @@ class HealthCanadaList extends Component {
       });
   };
 
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   if (this.state.title && this.state.author) {
-  //     API.saveBook({
-  //       title: this.state.title,
-  //       author: this.state.author,
-  //       synopsis: this.state.synopsis
-  //     })
-  //       .then(res => this.loadBooks())
-  //       .catch(err => console.log(err));
-  //   }
-  // };
-
   render() {
     return (
-      <Container fluid>
-        <Row>
+      <div className="container">
+        <div className="row">
           <DropDown
             name="foodGroupId"
             onChange={this.handleInputChange}
@@ -110,8 +87,8 @@ class HealthCanadaList extends Component {
               </option>
             ))}
           </DropDown>
-        </Row>
-        <Row>
+        </div>
+        <div className="row">
           {this.state.foodNames.length ? (
             <List>
               {this.state.foodNames.map(foodName => (
@@ -148,8 +125,8 @@ class HealthCanadaList extends Component {
           ) : (
             <h3>Search or select food group</h3>
           )}
-        </Row>
-      </Container>
+        </div>
+      </div>
     );
   }
 }

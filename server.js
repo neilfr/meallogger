@@ -1,8 +1,5 @@
 const express = require("express");
 const routes = require("./routes");
-
-// const Sequelize = require('sequelize');
-
 const app = express();
 
 // use the environment variable for the port number if it exists; otherwise use 3001
@@ -19,25 +16,9 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-// Add routes, both API and view
-app.use(routes);
-// Routes
-// =============================================================
-//require("./routes/api-routes.js")(app);
-// var db = require("./models");
 
-// db.sequelize
-//   .authenticate()
-//   .then(() => {
-//     console.log("Database connection has been established successfully.");
-//     // Start the API server
-//     app.listen(PORT, function() {
-//       console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-//     });
-//   })
-//   .catch(err => {
-//     console.error("Unable to connect to the database:", err);
-//   });
+// Add routes
+app.use(routes);
 
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
