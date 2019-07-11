@@ -26,7 +26,6 @@ class HealthCanadaList extends Component {
   };
 
   loadFoodNames = foodGroupId => {
-    // API.getFoodNames()
     API.getFoodNamesByFoodGroupId(foodGroupId)
       .then(res => {
         console.log("res.data:", res.data);
@@ -44,6 +43,9 @@ class HealthCanadaList extends Component {
     this.setState({
       [name]: value
     });
+
+    // Only load the food name list if a food group was selected,
+    // otherwise, the "blank" food item will be displayed.
     value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
   };
 
@@ -90,7 +92,7 @@ class HealthCanadaList extends Component {
         </div>
         <div className="row">
           {this.state.foodNames.length ? (
-            <List>
+            <ul>
               {this.state.foodNames.map(foodName => (
                 <ListItem key={foodName.foodId}>
                   {foodName.favourite === null ? (
@@ -121,7 +123,7 @@ class HealthCanadaList extends Component {
                   </strong>
                 </ListItem>
               ))}
-            </List>
+            </ul>
           ) : (
             <h3>Search or select food group</h3>
           )}
