@@ -67,6 +67,12 @@ class ConsumptionLog extends Component {
       });
   };
 
+  updateConsumptionLogEntryFood = foodId => {
+    const logEntry = this.state.currentLogEntry;
+    logEntry.foodId = foodId;
+    this.setState({ currentLogEntry: logEntry });
+  };
+
   addConsumptionLogEntry = () => {
     const now = new Date();
     const consumptionLogEntry = {
@@ -105,6 +111,10 @@ class ConsumptionLog extends Component {
     this.setState({ currentLogEntry: test[0] });
   };
 
+  testFunction = () => {
+    console.log("HELLLOOO WORLD");
+  };
+
   // handleFormSubmit = event => {
   //   event.preventDefault();
   //   console.log("hit form submit");
@@ -122,6 +132,7 @@ class ConsumptionLog extends Component {
   render() {
     return (
       <div className="container">
+        <button onClick={this.testFunction}>click here</button>
         {/* to orient log details beside log entries list*/}
         <div className="row">
           {/* log list column */}
@@ -224,9 +235,13 @@ class ConsumptionLog extends Component {
                 {this.state.favouriteFoods.map(food => (
                   <>
                     <FoodSelectionListItem key={food.foodId}>
-                      FoodId: {food.foodId}
-                      <br />
-                      {food.foodDescription}
+                      <button
+                        name="foodId"
+                        onClick={this.handleInputChange}
+                        value={food.foodId}
+                      >
+                        {food.foodDescription}
+                      </button>
                     </FoodSelectionListItem>
                   </>
                 ))}
