@@ -37,5 +37,9 @@ export default {
   unFavouriteFood: function(favouriteFood) {
     console.log("in api, add favourite food!:", JSON.stringify(favouriteFood));
     return axios.delete("api/favouritefoods/", { data: favouriteFood });
+  },
+  getFavouriteFoodsByUserId: function(userId) {
+    console.log("inside favourite foods by id with userId:", userId);
+    return axios.get("api/favouritefoods/" + userId);
   }
 };

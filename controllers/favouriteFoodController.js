@@ -35,5 +35,21 @@ module.exports = {
       )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  findByUserId: function(req, res) {
+    sequelize
+      .query(
+        "SELECT favouritefood.foodId, foodname.foodDescription " +
+          "FROM favouritefood " +
+          "INNER JOIN foodname " +
+          "ON favouritefood.foodId=foodname.foodId " +
+          "WHERE favouritefood.userId = ?",
+        {
+          type: sequelize.QueryTypes.SELECT,
+          replacements: [req.params.userId]
+        }
+      )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   }
 };

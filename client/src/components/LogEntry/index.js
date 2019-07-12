@@ -13,8 +13,6 @@ export function LogEntry(props) {
         onChange={props.onChange}
       />
       <br />
-      Food Code: {props.logEntry.foodCode}
-      <br />
       Food Description: {props.logEntry.foodDescription}
       <br />
       Quantity (mg):

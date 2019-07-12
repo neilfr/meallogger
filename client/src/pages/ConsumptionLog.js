@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { List, ListItem } from "../components/List";
+import {
+  FoodSelectionList,
+  FoodSelectionListItem
+} from "../components/FoodSelectionList";
 import { LogEntry } from "../components/LogEntry";
 import Moment from "moment";
 
@@ -9,19 +13,31 @@ class ConsumptionLog extends Component {
   state = {
     userId: 1,
     consumptionLog: [],
-    currentLogEntry: null
+    currentLogEntry: null,
+    favouriteFoods: []
   };
 
   componentDidMount() {
     console.log("component did mount");
     this.loadConsumptionLog();
+    this.loadFavouriteFoods();
   }
 
   loadConsumptionLog = () => {
     API.getConsumptionLogByUserId(this.state.userId)
       .then(res => {
+        console.log("getConsumptionLogByUserId response:", res.data);
         this.setState({ currentLogEntry: null, consumptionLog: res.data });
-        console.log("res.data:", res.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  loadFavouriteFoods = () => {
+    console.log("load favourite foods for user:", this.state.userId);
+    API.getFavouriteFoodsByUserId(this.state.userId)
+      .then(res => {
+        console.log("getFavouriteFoodsByUserId response:", res.data);
+        this.setState({ favouriteFoods: res.data });
       })
       .catch(err => console.log(err));
   };
@@ -39,12 +55,6 @@ class ConsumptionLog extends Component {
     logEntry[name] = value;
     console.log("new log entry:", JSON.stringify(logEntry));
     this.setState({ currentLogEntry: logEntry });
-
-    // TODO: UPDATE THE DATABASE with the new log entry
-    // this.setState({
-    //   [name]: value
-    // });
-    // value > 0 ? this.loadFoodNames(value) : this.setState({ foodNames: [] });
   };
 
   updateConsumptionLogEntry = () => {
@@ -115,7 +125,7 @@ class ConsumptionLog extends Component {
         {/* to orient log details beside log entries list*/}
         <div className="row">
           {/* log list column */}
-          <div className="col">
+          <div className="col-4">
             <div className="row">
               <button
                 onClick={() => {
@@ -133,24 +143,40 @@ class ConsumptionLog extends Component {
                   {this.state.consumptionLog.map(logEntry => (
                     <>
                       <ListItem key={logEntry.consumptionLogId}>
-                        <div
-                          className="log-entry"
-                          onClick={() => {
-                            this.setCurrentLogEntry(logEntry.consumptionLogId);
-                          }}
-                        >
-                          {/* LogID:{logEntry.consumptionLogId} */}
-                          {/* FoodID:{logEntry.foodId} */}
-                          Date:{" "}
-                          {Moment(logEntry.logDate).format(
-                            "YYYY-MM-DD hh:mm a"
-                          )}
-                          <br />
-                          {logEntry.foodDescription} Qty (mg):{" "}
-                          {logEntry.quantity} Calories:{" "}
-                          {(logEntry.calories * logEntry.quantity) / 100}
+                        <div className="row">
+                          <div
+                            className="col-10"
+                            onClick={() => {
+                              this.setCurrentLogEntry(
+                                logEntry.consumptionLogId
+                              );
+                            }}
+                          >
+                            {/* LogID:{logEntry.consumptionLogId} */}
+                            {/* FoodID:{logEntry.foodId} */}
+                            {Moment(logEntry.logDate).format(
+                              "YYYY-MM-DD hh:mm a"
+                            )}
+                            <br />
+                            {logEntry.foodDescription}
+                            <br />
+                            Qty (mg): {logEntry.quantity} Calories:{" "}
+                            {(logEntry.calories * logEntry.quantity) / 100}
+                          </div>
+                          <div className="col">
+                            <span
+                              onClick={() => {
+                                this.deleteConsumptionLogEntry(
+                                  logEntry.consumptionLogId
+                                );
+                              }}
+                            >
+                              X
+                            </span>
+                          </div>
                         </div>
-                        <button
+
+                        {/* <button
                           onClick={() => {
                             this.deleteConsumptionLogEntry(
                               logEntry.consumptionLogId
@@ -158,7 +184,7 @@ class ConsumptionLog extends Component {
                           }}
                         >
                           X
-                        </button>
+                        </button> */}
                       </ListItem>
                     </>
                   ))}
@@ -190,6 +216,25 @@ class ConsumptionLog extends Component {
             {/* end row */}
           </div>
           {/* end of orienting log details beside log entry list */}
+
+          {/* select food column */}
+          <div className="col">
+            {this.state.favouriteFoods.length && this.state.currentLogEntry ? (
+              <FoodSelectionList>
+                {this.state.favouriteFoods.map(food => (
+                  <>
+                    <FoodSelectionListItem key={food.foodId}>
+                      FoodId: {food.foodId}
+                      <br />
+                      {food.foodDescription}
+                    </FoodSelectionListItem>
+                  </>
+                ))}
+              </FoodSelectionList>
+            ) : (
+              <h3>na</h3>
+            )}
+          </div>
         </div>
       </div> // end container
     );
