@@ -57,10 +57,22 @@ class ConsumptionLog extends Component {
     this.setState({ currentLogEntry: logEntry });
   };
 
+  handleFavouriteFoodChange = event => {
+    const selectedFavourite = this.state.favouriteFoods.filter(favourite => {
+      if (favourite.foodId === parseInt(event.target.value)) {
+        return favourite;
+      }
+    });
+    const logEntry = this.state.currentLogEntry;
+    logEntry.foodId = selectedFavourite[0].foodId;
+    logEntry.foodDescription = selectedFavourite[0].foodDescription;
+    this.setState({ currentLogEntry: logEntry });
+  };
+
   updateConsumptionLogEntry = () => {
     API.updateConsumptionLogEntry(this.state.currentLogEntry)
       .then(res => {
-        console.log("got something back:", res.data);
+        console.log("returned from update consumption log entry:", res.data);
       })
       .then(() => {
         this.loadConsumptionLog();
@@ -85,7 +97,7 @@ class ConsumptionLog extends Component {
     console.log("adding log entry:", JSON.stringify(consumptionLogEntry));
     API.addConsumptionLogEntry(consumptionLogEntry)
       .then(res => {
-        console.log("got something back:", res.data);
+        console.log("response from add consumption log entry:", res.data);
       })
       .then(() => {
         this.loadConsumptionLog();
@@ -110,24 +122,6 @@ class ConsumptionLog extends Component {
     console.log("test is:", test);
     this.setState({ currentLogEntry: test[0] });
   };
-
-  testFunction = () => {
-    console.log("HELLLOOO WORLD");
-  };
-
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   console.log("hit form submit");
-  //   // if (this.state.title && this.state.author) {
-  //   //   API.saveLogEntry({
-  //   //     title: this.state.title,
-  //   //     author: this.state.author,
-  //   //     synopsis: this.state.synopsis
-  //   //   })
-  //   //     .then(res => this.loadConsumptionLog())
-  //   //     .catch(err => console.log(err));
-  //   // }
-  // };
 
   render() {
     return (
@@ -186,16 +180,6 @@ class ConsumptionLog extends Component {
                             </span>
                           </div>
                         </div>
-
-                        {/* <button
-                          onClick={() => {
-                            this.deleteConsumptionLogEntry(
-                              logEntry.consumptionLogId
-                            );
-                          }}
-                        >
-                          X
-                        </button> */}
                       </ListItem>
                     </>
                   ))}
@@ -224,9 +208,8 @@ class ConsumptionLog extends Component {
             ) : (
               <h3>select a log entry to edit</h3>
             )}
-            {/* end row */}
+            {/* end of log details column */}
           </div>
-          {/* end of orienting log details beside log entry list */}
 
           {/* select food column */}
           <div className="col">
@@ -237,7 +220,7 @@ class ConsumptionLog extends Component {
                     <FoodSelectionListItem key={food.foodId}>
                       <button
                         name="foodId"
-                        onClick={this.handleInputChange}
+                        onClick={this.handleFavouriteFoodChange}
                         value={food.foodId}
                       >
                         {food.foodDescription}
@@ -251,6 +234,7 @@ class ConsumptionLog extends Component {
             )}
           </div>
         </div>
+        {/* favourite food list column */}
       </div> // end container
     );
   }
