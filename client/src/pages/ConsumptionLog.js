@@ -7,6 +7,9 @@ import {
   FoodSelectionListItem
 } from "../components/FoodSelectionList";
 import { LogEntry } from "../components/LogEntry";
+import { LogEntryForm } from "../components/LogEntryForm";
+import { Button } from "../components/Button";
+import { DeleteBtn } from "../components/DeleteBtn";
 import Moment from "moment";
 
 class ConsumptionLog extends Component {
@@ -14,7 +17,8 @@ class ConsumptionLog extends Component {
     userId: 1,
     consumptionLog: [],
     currentLogEntry: null,
-    favouriteFoods: []
+    favouriteFoods: [],
+    displayColumn: "consumptionLog" //other options: "logForm" and "favouritesList"
   };
 
   componentDidMount() {
@@ -27,7 +31,11 @@ class ConsumptionLog extends Component {
     API.getConsumptionLogByUserId(this.state.userId)
       .then(res => {
         console.log("getConsumptionLogByUserId response:", res.data);
-        this.setState({ currentLogEntry: null, consumptionLog: res.data });
+        this.setState({
+          currentLogEntry: null,
+          consumptionLog: res.data,
+          displayColumn: "consumptionLog"
+        });
       })
       .catch(err => console.log(err));
   };
@@ -116,21 +124,27 @@ class ConsumptionLog extends Component {
 
   setCurrentLogEntry = consumptionLogId => {
     console.log("updating log entry", consumptionLogId);
-    const test = this.state.consumptionLog.filter(logEntry => {
-      if (logEntry.consumptionLogId === consumptionLogId) return logEntry;
+    const newLogEntry = this.state.consumptionLog.filter(logEntry => {
+      if (logEntry.consumptionLogId === consumptionLogId) {
+        console.log("current log entry:", logEntry);
+        return logEntry;
+      }
     });
-    console.log("test is:", test);
-    this.setState({ currentLogEntry: test[0] });
+    this.setState({
+      currentLogEntry: newLogEntry[0],
+      displayColumn: "logForm"
+    });
+  };
+
+  doThis = () => {
+    console.log("hello");
   };
 
   render() {
     return (
       <div className="container">
-        <button onClick={this.testFunction}>click here</button>
-        {/* to orient log details beside log entries list*/}
         <div className="row">
-          {/* log list column */}
-          <div className="col-4">
+          <div className="col">
             <div className="row">
               <button
                 onClick={() => {
@@ -140,93 +154,58 @@ class ConsumptionLog extends Component {
                 New Log Entry
               </button>
             </div>
-            {/* end row */}
-
-            <div className="row">
-              {this.state.consumptionLog.length ? (
-                <List>
-                  {this.state.consumptionLog.map(logEntry => (
-                    <>
-                      <ListItem key={logEntry.consumptionLogId}>
-                        <div className="row">
-                          <div
-                            className="col-10"
-                            onClick={() => {
-                              this.setCurrentLogEntry(
-                                logEntry.consumptionLogId
-                              );
-                            }}
-                          >
-                            {/* LogID:{logEntry.consumptionLogId} */}
-                            {/* FoodID:{logEntry.foodId} */}
-                            {Moment(logEntry.logDate).format(
-                              "YYYY-MM-DD hh:mm a"
-                            )}
-                            <br />
-                            {logEntry.foodDescription}
-                            <br />
-                            Qty (mg): {logEntry.quantity} Calories:{" "}
-                            {(logEntry.calories * logEntry.quantity) / 100}
-                          </div>
-                          <div className="col">
-                            <span
-                              onClick={() => {
-                                this.deleteConsumptionLogEntry(
-                                  logEntry.consumptionLogId
-                                );
-                              }}
-                            >
-                              X
-                            </span>
-                          </div>
-                        </div>
-                      </ListItem>
-                    </>
-                  ))}
-                </List>
-              ) : (
-                <h3>Add a new log entry</h3>
-              )}
-            </div>
-            {/* end row */}
+            {this.state.consumptionLog.length ? (
+              <List>
+                {this.state.consumptionLog.map(logEntry => (
+                  <LogEntry
+                    key={logEntry.consumptionLogId}
+                    setCurrentLogEntryClick={() => {
+                      this.setCurrentLogEntry(logEntry.consumptionLogId);
+                    }}
+                    setDeleteClick={() => {
+                      this.deleteConsumptionLogEntry(logEntry.consumptionLogId);
+                    }}
+                    logDate={Moment(logEntry.logDate).format(
+                      "YYYY-MM-DD hh:mm a"
+                    )}
+                    foodDescription={logEntry.foodDescription}
+                    quantity={logEntry.quantity}
+                    calories={(logEntry.calories * logEntry.quantity) / 100}
+                  />
+                ))}
+              </List>
+            ) : (
+              <h3>Add a new log entry</h3>
+            )}
           </div>
-          {/* end log list col */}
 
-          {/* log details column */}
           <div className="col">
             {this.state.currentLogEntry ? (
-              <div>
-                {console.log("current log entry:", this.state.currentLogEntry)}
-                <LogEntry
-                  key={this.state.currentLogEntry.consumptionLogId}
-                  logEntry={this.state.currentLogEntry}
-                  onChange={this.handleInputChange}
-                  saveClick={this.updateConsumptionLogEntry}
-                  cancelClick={this.loadConsumptionLog}
-                />
-              </div>
+              <LogEntryForm
+                key={this.state.currentLogEntry.consumptionLogId}
+                logEntry={this.state.currentLogEntry}
+                onChange={this.handleInputChange}
+                saveClick={this.updateConsumptionLogEntry}
+                cancelClick={this.loadConsumptionLog}
+              />
             ) : (
               <h3>select a log entry to edit</h3>
             )}
-            {/* end of log details column */}
           </div>
 
-          {/* select food column */}
           <div className="col">
             {this.state.favouriteFoods.length && this.state.currentLogEntry ? (
               <FoodSelectionList>
                 {this.state.favouriteFoods.map(food => (
-                  <>
-                    <FoodSelectionListItem key={food.foodId}>
-                      <button
-                        name="foodId"
-                        onClick={this.handleFavouriteFoodChange}
-                        value={food.foodId}
-                      >
-                        {food.foodDescription}
-                      </button>
-                    </FoodSelectionListItem>
-                  </>
+                  <FoodSelectionListItem key={food.foodId}>
+                    <button
+                      name="foodId"
+                      onClick={this.handleFavouriteFoodChange}
+                      value={food.foodId}
+                    >
+                      {food.foodDescription}
+                    </button>
+                  </FoodSelectionListItem>
                 ))}
               </FoodSelectionList>
             ) : (
@@ -234,8 +213,7 @@ class ConsumptionLog extends Component {
             )}
           </div>
         </div>
-        {/* favourite food list column */}
-      </div> // end container
+      </div>
     );
   }
 }
