@@ -46,7 +46,8 @@ module.exports = {
           "INNER JOIN nutrientamount n " +
           "ON c.foodId=n.foodId " +
           "WHERE userID=? " +
-          "AND n.nutrientID=208",
+          "AND n.nutrientID=208 " +
+          "ORDER BY c.logDate DESC",
         {
           type: sequelize.QueryTypes.SELECT,
           replacements: [req.params.userId]
