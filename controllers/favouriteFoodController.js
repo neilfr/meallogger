@@ -1,5 +1,3 @@
-const db = require("../models");
-const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
 
 module.exports = {
@@ -8,7 +6,7 @@ module.exports = {
       .query("INSERT INTO favouritefood(userId,foodId) VALUES(?,?)", {
         replacements: [req.body.userId, req.body.foodId]
       })
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   delete: function(req, res) {
@@ -21,7 +19,7 @@ module.exports = {
           replacements: [req.body.userId, req.body.foodId]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   findAll: function(req, res) {
@@ -33,7 +31,7 @@ module.exports = {
           type: sequelize.QueryTypes.SELECT
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   findByUserId: function(req, res) {
@@ -52,7 +50,7 @@ module.exports = {
           replacements: [req.params.userId]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   }
 };

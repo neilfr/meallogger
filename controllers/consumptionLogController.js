@@ -1,5 +1,3 @@
-const db = require("../models");
-const Sequelize = require("sequelize");
 const sequelize = require("../config/connection.js");
 const Moment = require("moment");
 
@@ -18,7 +16,7 @@ module.exports = {
           ]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   delete: function(req, res) {
@@ -31,7 +29,7 @@ module.exports = {
           replacements: [req.params.consumptionLogId]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   findByUserId: function(req, res) {
@@ -53,7 +51,7 @@ module.exports = {
           replacements: [req.params.userId]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   findAll: function(req, res) {
@@ -65,7 +63,7 @@ module.exports = {
           type: sequelize.QueryTypes.SELECT
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
@@ -84,7 +82,7 @@ module.exports = {
           ]
         }
       )
-      .then(dbModel => res.json(dbModel))
+      .then(data => res.json(data))
       .catch(err => res.status(422).json(err));
   }
 };
