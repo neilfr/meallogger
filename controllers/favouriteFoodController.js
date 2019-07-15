@@ -39,11 +39,14 @@ module.exports = {
   findByUserId: function(req, res) {
     sequelize
       .query(
-        "SELECT favouritefood.foodId, foodname.foodDescription " +
-          "FROM favouritefood " +
-          "INNER JOIN foodname " +
-          "ON favouritefood.foodId=foodname.foodId " +
-          "WHERE favouritefood.userId = ?",
+        "SELECT ff.foodId, fn.foodDescription, n.nutrientValue as calories " +
+          "FROM favouritefood ff " +
+          "INNER JOIN foodname fn " +
+          "ON ff.foodId=fn.foodId " +
+          "INNER JOIN nutrientamount n " +
+          "ON fn.foodId=n.foodId " +
+          "WHERE ff.userId = ? " +
+          "AND n.nutrientId=208",
         {
           type: sequelize.QueryTypes.SELECT,
           replacements: [req.params.userId]

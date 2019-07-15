@@ -54,9 +54,15 @@ class ConsumptionLog extends Component {
         return favourite;
       }
     });
+    console.log(
+      "inside handleFavouriteFoodChange, selectedFavourite is:",
+      selectedFavourite[0]
+    );
+    console.log("this.state.currentLogEntry is:", this.state.currentLogEntry);
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = selectedFavourite[0].foodId;
     logEntry.foodDescription = selectedFavourite[0].foodDescription;
+    logEntry.calories = selectedFavourite[0].calories;
     this.setState({ currentLogEntry: logEntry, display: "logEntryForm" });
   };
 
