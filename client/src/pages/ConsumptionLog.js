@@ -3,9 +3,9 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { List, ListItem } from "../components/List";
 import {
-  FoodSelectionList,
-  FoodSelectionListItem
-} from "../components/FoodSelectionList";
+  FavouriteFoodSelectionList,
+  FavouriteFoodSelectionListItem
+} from "../components/FavouriteFoodSelectionList";
 import { LogList } from "../components/LogList";
 import { LogEntry } from "../components/LogEntry";
 import { LogEntryForm } from "../components/LogEntryForm";
@@ -146,23 +146,10 @@ class ConsumptionLog extends Component {
           </div>
 
           <div className="col">
-            {this.state.favouriteFoods.length && this.state.currentLogEntry ? (
-              <FoodSelectionList>
-                {this.state.favouriteFoods.map(food => (
-                  <FoodSelectionListItem key={food.foodId}>
-                    <button
-                      name="foodId"
-                      onClick={this.handleFavouriteFoodChange}
-                      value={food.foodId}
-                    >
-                      {food.foodDescription}
-                    </button>
-                  </FoodSelectionListItem>
-                ))}
-              </FoodSelectionList>
-            ) : (
-              <h3>na</h3>
-            )}
+            <FavouriteFoodSelectionList
+              favouriteFoods={this.state.favouriteFoods}
+              handleFavouriteFoodChange={this.handleFavouriteFoodChange}
+            />
           </div>
         </div>
       </div>
