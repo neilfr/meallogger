@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { DropDown } from "../components/DropDown";
 import API from "../utils/API";
-import { Link } from "react-router-dom";
-import { List, ListItem } from "../components/List";
+import {
+  HealthCanadaFoodList,
+  HealthCanadaFoodListItem
+} from "../components/HealthCanadaFoodList";
 
 class HealthCanadaList extends Component {
   state = {
@@ -94,7 +96,7 @@ class HealthCanadaList extends Component {
           {this.state.foodNames.length ? (
             <ul>
               {this.state.foodNames.map(foodName => (
-                <ListItem key={foodName.foodId}>
+                <HealthCanadaFoodListItem key={foodName.foodId}>
                   {foodName.favourite === null ? (
                     <i
                       className="far fa-star"
@@ -121,7 +123,7 @@ class HealthCanadaList extends Component {
                     Code:{foodName.foodCode}
                     Name:{foodName.foodDescription}
                   </strong>
-                </ListItem>
+                </HealthCanadaFoodListItem>
               ))}
             </ul>
           ) : (

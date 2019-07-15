@@ -13,7 +13,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={HealthCanadaList} />
           <Route exact path="/favouritefoods" component={HealthCanadaList} />
-          <Route exact path="/foodgroups" component={HealthCanadaList} />
+          {/* <Route exact path="/foodgroups" component={HealthCanadaList} /> */}
           <Route exact path="/consumptionlog" component={ConsumptionLog} />
           <Route component={NoMatch} />
         </Switch>

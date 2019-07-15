@@ -71,7 +71,6 @@ class ConsumptionLog extends Component {
   };
 
   updateConsumptionLogEntryFood = () => {
-    console.log("updating consumptionlogentryfood!!");
     this.setState({ display: "favouritesList" });
   };
 
