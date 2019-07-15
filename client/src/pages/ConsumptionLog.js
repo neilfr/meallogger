@@ -6,6 +6,7 @@ import {
   FoodSelectionList,
   FoodSelectionListItem
 } from "../components/FoodSelectionList";
+import { LogList } from "../components/LogList";
 import { LogEntry } from "../components/LogEntry";
 import { LogEntryForm } from "../components/LogEntryForm";
 import { Button } from "../components/Button";
@@ -18,7 +19,7 @@ class ConsumptionLog extends Component {
     consumptionLog: [],
     currentLogEntry: null,
     favouriteFoods: [],
-    displayColumn: "consumptionLog" //other options: "logForm" and "favouritesList"
+    displayColumn: "consumptionLog" //other options: "logEntryForm" and "favouritesList"
   };
 
   componentDidMount() {
@@ -74,7 +75,7 @@ class ConsumptionLog extends Component {
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = selectedFavourite[0].foodId;
     logEntry.foodDescription = selectedFavourite[0].foodDescription;
-    this.setState({ currentLogEntry: logEntry });
+    this.setState({ currentLogEntry: logEntry, displayColumn: "logForm" });
   };
 
   updateConsumptionLogEntry = () => {
@@ -90,7 +91,7 @@ class ConsumptionLog extends Component {
   updateConsumptionLogEntryFood = foodId => {
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = foodId;
-    this.setState({ currentLogEntry: logEntry });
+    this.setState({ currentLogEntry: logEntry, displayColumn: "logEntryForm" });
   };
 
   addConsumptionLogEntry = () => {
@@ -132,12 +133,8 @@ class ConsumptionLog extends Component {
     });
     this.setState({
       currentLogEntry: newLogEntry[0],
-      displayColumn: "logForm"
+      displayColumn: "logEntryForm"
     });
-  };
-
-  doThis = () => {
-    console.log("hello");
   };
 
   render() {
@@ -154,33 +151,16 @@ class ConsumptionLog extends Component {
                 New Log Entry
               </button>
             </div>
-            {this.state.consumptionLog.length ? (
-              <List>
-                {this.state.consumptionLog.map(logEntry => (
-                  <LogEntry
-                    key={logEntry.consumptionLogId}
-                    setCurrentLogEntryClick={() => {
-                      this.setCurrentLogEntry(logEntry.consumptionLogId);
-                    }}
-                    setDeleteClick={() => {
-                      this.deleteConsumptionLogEntry(logEntry.consumptionLogId);
-                    }}
-                    logDate={Moment(logEntry.logDate).format(
-                      "YYYY-MM-DD hh:mm a"
-                    )}
-                    foodDescription={logEntry.foodDescription}
-                    quantity={logEntry.quantity}
-                    calories={(logEntry.calories * logEntry.quantity) / 100}
-                  />
-                ))}
-              </List>
-            ) : (
-              <h3>Add a new log entry</h3>
-            )}
+            <LogList
+              consumptionLog={this.state.consumptionLog}
+              setCurrentLogEntryClick={this.setCurrentLogEntry}
+              setDeleteClick={this.deleteConsumptionLogEntry}
+            />
           </div>
 
           <div className="col">
-            {this.state.currentLogEntry ? (
+            {this.state.currentLogEntry &&
+            this.state.displayColumn === "logEntryForm" ? (
               <LogEntryForm
                 key={this.state.currentLogEntry.consumptionLogId}
                 logEntry={this.state.currentLogEntry}
