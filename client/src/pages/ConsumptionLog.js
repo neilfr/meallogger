@@ -142,19 +142,11 @@ class ConsumptionLog extends Component {
       <div className="container">
         <div className="row">
           <div className="col">
-            <div className="row">
-              <button
-                onClick={() => {
-                  this.addConsumptionLogEntry();
-                }}
-              >
-                New Log Entry
-              </button>
-            </div>
             <LogList
               consumptionLog={this.state.consumptionLog}
               setCurrentLogEntryClick={this.setCurrentLogEntry}
               setDeleteClick={this.deleteConsumptionLogEntry}
+              addConsumptionLogEntry={this.addConsumptionLogEntry}
             />
           </div>
 

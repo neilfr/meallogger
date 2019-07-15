@@ -6,23 +6,32 @@ import Moment from "moment";
 export function LogList(props) {
   console.log("LogList props is:", props);
   return (
-    <div className="list-overflow-container">
-      <ul className="list-group">{props.children}</ul>
-      {props.consumptionLog.map(logEntry => (
-        <LogEntry
-          key={logEntry.consumptionLogId}
-          setCurrentLogEntryClick={() => {
-            props.setCurrentLogEntryClick(logEntry.consumptionLogId);
-          }}
-          setDeleteClick={() => {
-            props.setDeleteClick(logEntry.consumptionLogId);
-          }}
-          logDate={Moment(logEntry.logDate).format("YYYY-MM-DD hh:mm a")}
-          foodDescription={logEntry.foodDescription}
-          quantity={logEntry.quantity}
-          calories={(logEntry.calories * logEntry.quantity) / 100}
-        />
-      ))}
+    <div>
+      <button
+        onClick={() => {
+          props.addConsumptionLogEntry();
+        }}
+      >
+        New Log Entry
+      </button>
+      <div className="list-overflow-container">
+        <ul className="list-group">{props.children}</ul>
+        {props.consumptionLog.map(logEntry => (
+          <LogEntry
+            key={logEntry.consumptionLogId}
+            setCurrentLogEntryClick={() => {
+              props.setCurrentLogEntryClick(logEntry.consumptionLogId);
+            }}
+            setDeleteClick={() => {
+              props.setDeleteClick(logEntry.consumptionLogId);
+            }}
+            logDate={Moment(logEntry.logDate).format("YYYY-MM-DD hh:mm a")}
+            foodDescription={logEntry.foodDescription}
+            quantity={logEntry.quantity}
+            calories={(logEntry.calories * logEntry.quantity) / 100}
+          />
+        ))}
+      </div>
     </div>
   );
 }
