@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import { LogEntry } from "../LogEntry";
+import { LogSummary } from "../LogSummary";
 import Moment from "moment";
 
 export function LogList(props) {
@@ -22,6 +23,7 @@ export function LogList(props) {
   } else {
     return (
       <div>
+        <LogSummary consumptionLog={props.consumptionLog} />
         <button
           onClick={() => {
             props.addConsumptionLogEntry();
