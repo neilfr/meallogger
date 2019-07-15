@@ -18,12 +18,10 @@ class ConsumptionLog extends Component {
     userId: 1,
     consumptionLog: [],
     currentLogEntry: null,
-    favouriteFoods: [],
-    displayColumn: "consumptionLog" //other options: "logEntryForm" and "favouritesList"
+    favouriteFoods: []
   };
 
   componentDidMount() {
-    console.log("component did mount");
     this.loadConsumptionLog();
     this.loadFavouriteFoods();
   }
@@ -31,11 +29,10 @@ class ConsumptionLog extends Component {
   loadConsumptionLog = () => {
     API.getConsumptionLogByUserId(this.state.userId)
       .then(res => {
-        console.log("getConsumptionLogByUserId response:", res.data);
+        console.log("response from getConsumptionLogByUserId:", res.data);
         this.setState({
           currentLogEntry: null,
-          consumptionLog: res.data,
-          displayColumn: "consumptionLog"
+          consumptionLog: res.data
         });
       })
       .catch(err => console.log(err));
@@ -45,24 +42,16 @@ class ConsumptionLog extends Component {
     console.log("load favourite foods for user:", this.state.userId);
     API.getFavouriteFoodsByUserId(this.state.userId)
       .then(res => {
-        console.log("getFavouriteFoodsByUserId response:", res.data);
+        console.log("response from getFavouriteFoodsByUserId:", res.data);
         this.setState({ favouriteFoods: res.data });
       })
       .catch(err => console.log(err));
   };
 
   handleInputChange = event => {
-    console.log("event:", event);
     const { name, value } = event.target;
-    console.log("name", name);
-    console.log("value", value);
-    console.log(
-      "current log entry:",
-      JSON.stringify(this.state.currentLogEntry)
-    );
     const logEntry = this.state.currentLogEntry;
     logEntry[name] = value;
-    console.log("new log entry:", JSON.stringify(logEntry));
     this.setState({ currentLogEntry: logEntry });
   };
 
@@ -75,13 +64,13 @@ class ConsumptionLog extends Component {
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = selectedFavourite[0].foodId;
     logEntry.foodDescription = selectedFavourite[0].foodDescription;
-    this.setState({ currentLogEntry: logEntry, displayColumn: "logForm" });
+    this.setState({ currentLogEntry: logEntry });
   };
 
   updateConsumptionLogEntry = () => {
     API.updateConsumptionLogEntry(this.state.currentLogEntry)
       .then(res => {
-        console.log("returned from update consumption log entry:", res.data);
+        console.log("response from updateConsumptionLogEntry:", res.data);
       })
       .then(() => {
         this.loadConsumptionLog();
@@ -91,7 +80,7 @@ class ConsumptionLog extends Component {
   updateConsumptionLogEntryFood = foodId => {
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = foodId;
-    this.setState({ currentLogEntry: logEntry, displayColumn: "logEntryForm" });
+    this.setState({ currentLogEntry: logEntry });
   };
 
   addConsumptionLogEntry = () => {
@@ -106,7 +95,7 @@ class ConsumptionLog extends Component {
     console.log("adding log entry:", JSON.stringify(consumptionLogEntry));
     API.addConsumptionLogEntry(consumptionLogEntry)
       .then(res => {
-        console.log("response from add consumption log entry:", res.data);
+        console.log("response from addConsumptionLogEntry:", res.data);
       })
       .then(() => {
         this.loadConsumptionLog();
@@ -116,7 +105,7 @@ class ConsumptionLog extends Component {
   deleteConsumptionLogEntry = consumptionLogId => {
     API.deleteConsumptionLogEntry(consumptionLogId)
       .then(res => {
-        console.log("got something back:", res.data);
+        console.log("response from deleteConsumptionLogEntry:", res.data);
       })
       .then(() => {
         this.loadConsumptionLog();
@@ -124,16 +113,13 @@ class ConsumptionLog extends Component {
   };
 
   setCurrentLogEntry = consumptionLogId => {
-    console.log("updating log entry", consumptionLogId);
     const newLogEntry = this.state.consumptionLog.filter(logEntry => {
       if (logEntry.consumptionLogId === consumptionLogId) {
-        console.log("current log entry:", logEntry);
         return logEntry;
       }
     });
     this.setState({
-      currentLogEntry: newLogEntry[0],
-      displayColumn: "logEntryForm"
+      currentLogEntry: newLogEntry[0]
     });
   };
 
@@ -144,25 +130,19 @@ class ConsumptionLog extends Component {
           <div className="col">
             <LogList
               consumptionLog={this.state.consumptionLog}
-              setCurrentLogEntryClick={this.setCurrentLogEntry}
-              setDeleteClick={this.deleteConsumptionLogEntry}
+              setCurrentLogEntry={this.setCurrentLogEntry}
+              deleteConsumptionLogEntry={this.deleteConsumptionLogEntry}
               addConsumptionLogEntry={this.addConsumptionLogEntry}
             />
           </div>
 
           <div className="col">
-            {this.state.currentLogEntry &&
-            this.state.displayColumn === "logEntryForm" ? (
-              <LogEntryForm
-                key={this.state.currentLogEntry.consumptionLogId}
-                logEntry={this.state.currentLogEntry}
-                onChange={this.handleInputChange}
-                saveClick={this.updateConsumptionLogEntry}
-                cancelClick={this.loadConsumptionLog}
-              />
-            ) : (
-              <h3>select a log entry to edit</h3>
-            )}
+            <LogEntryForm
+              logEntry={this.state.currentLogEntry}
+              onChange={this.handleInputChange}
+              saveClick={this.updateConsumptionLogEntry}
+              cancelClick={this.loadConsumptionLog}
+            />
           </div>
 
           <div className="col">

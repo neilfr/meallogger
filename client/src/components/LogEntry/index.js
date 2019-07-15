@@ -7,19 +7,16 @@ export function LogEntry(props) {
   return (
     <div className="row">
       {/* <li className="list-group-item col-10" onClick={props.setLogEntryClick}> */}
-      <li
-        className="list-group-item col-10"
-        onClick={props.setCurrentLogEntryClick}
-      >
+      <li className="list-group-item col-10" onClick={props.setCurrentLogEntry}>
         {props.logDate}
         <br />
         {props.foodDescription}
         <br />
-        HelloQty:{props.quantity}
+        Qty:{props.quantity}
         <br />
         KCal:{props.calories}
       </li>
-      <DeleteBtn onClick={props.setDeleteClick} className="col" />
+      <DeleteBtn onClick={props.deleteConsumptionLogEntry} className="col" />
     </div>
   );
 }
