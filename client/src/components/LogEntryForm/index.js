@@ -16,7 +16,9 @@ export function LogEntryForm(props) {
           onChange={props.onChange}
         />
         <br />
-        Food Description: {props.logEntry.foodDescription}
+        <button onClick={props.updateConsumptionLogEntryFood}>
+          Food Description: {props.logEntry.foodDescription}
+        </button>
         <br />
         Quantity (mg):
         <input
@@ -28,7 +30,7 @@ export function LogEntryForm(props) {
         <br />
         Calories: {(props.logEntry.calories * props.logEntry.quantity) / 100}
         <br />
-        <button onClick={props.saveClick}>Save</button>
+        <button onClick={props.updateConsumptionLogEntry}>Save</button>
         <button onClick={props.cancelClick}>Cancel</button>
       </div>
     );

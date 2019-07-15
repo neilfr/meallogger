@@ -1,24 +1,16 @@
 import React, { Component } from "react";
 import API from "../utils/API";
-import { Link } from "react-router-dom";
-import { List, ListItem } from "../components/List";
-import {
-  FavouriteFoodSelectionList,
-  FavouriteFoodSelectionListItem
-} from "../components/FavouriteFoodSelectionList";
+import { FavouriteFoodSelectionList } from "../components/FavouriteFoodSelectionList";
 import { LogList } from "../components/LogList";
-import { LogEntry } from "../components/LogEntry";
 import { LogEntryForm } from "../components/LogEntryForm";
-import { Button } from "../components/Button";
-import { DeleteBtn } from "../components/DeleteBtn";
-import Moment from "moment";
 
 class ConsumptionLog extends Component {
   state = {
     userId: 1,
     consumptionLog: [],
     currentLogEntry: null,
-    favouriteFoods: []
+    favouriteFoods: [],
+    display: "logList"
   };
 
   componentDidMount() {
@@ -32,7 +24,8 @@ class ConsumptionLog extends Component {
         console.log("response from getConsumptionLogByUserId:", res.data);
         this.setState({
           currentLogEntry: null,
-          consumptionLog: res.data
+          consumptionLog: res.data,
+          display: "logList"
         });
       })
       .catch(err => console.log(err));
@@ -64,7 +57,7 @@ class ConsumptionLog extends Component {
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = selectedFavourite[0].foodId;
     logEntry.foodDescription = selectedFavourite[0].foodDescription;
-    this.setState({ currentLogEntry: logEntry });
+    this.setState({ currentLogEntry: logEntry, display: "logEntryForm" });
   };
 
   updateConsumptionLogEntry = () => {
@@ -77,10 +70,9 @@ class ConsumptionLog extends Component {
       });
   };
 
-  updateConsumptionLogEntryFood = foodId => {
-    const logEntry = this.state.currentLogEntry;
-    logEntry.foodId = foodId;
-    this.setState({ currentLogEntry: logEntry });
+  updateConsumptionLogEntryFood = () => {
+    console.log("updating consumptionlogentryfood!!");
+    this.setState({ display: "favouritesList" });
   };
 
   addConsumptionLogEntry = () => {
@@ -92,7 +84,6 @@ class ConsumptionLog extends Component {
       quantity: 100,
       logDate: now
     };
-    console.log("adding log entry:", JSON.stringify(consumptionLogEntry));
     API.addConsumptionLogEntry(consumptionLogEntry)
       .then(res => {
         console.log("response from addConsumptionLogEntry:", res.data);
@@ -119,15 +110,16 @@ class ConsumptionLog extends Component {
       }
     });
     this.setState({
-      currentLogEntry: newLogEntry[0]
+      currentLogEntry: newLogEntry[0],
+      display: "logEntryForm"
     });
   };
 
   render() {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col">
+    switch (this.state.display) {
+      case "logList":
+        return (
+          <div className="container">
             <LogList
               consumptionLog={this.state.consumptionLog}
               setCurrentLogEntry={this.setCurrentLogEntry}
@@ -135,25 +127,29 @@ class ConsumptionLog extends Component {
               addConsumptionLogEntry={this.addConsumptionLogEntry}
             />
           </div>
-
-          <div className="col">
+        );
+      case "logEntryForm":
+        return (
+          <div className="container">
             <LogEntryForm
               logEntry={this.state.currentLogEntry}
               onChange={this.handleInputChange}
-              saveClick={this.updateConsumptionLogEntry}
+              updateConsumptionLogEntry={this.updateConsumptionLogEntry}
               cancelClick={this.loadConsumptionLog}
+              updateConsumptionLogEntryFood={this.updateConsumptionLogEntryFood}
             />
           </div>
-
+        );
+      case "favouritesList":
+        return (
           <div className="col">
             <FavouriteFoodSelectionList
               favouriteFoods={this.state.favouriteFoods}
               handleFavouriteFoodChange={this.handleFavouriteFoodChange}
             />
           </div>
-        </div>
-      </div>
-    );
+        );
+    }
   }
 }
 
