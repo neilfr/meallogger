@@ -82,6 +82,7 @@ class ConsumptionLog extends Component {
 
   addConsumptionLogEntry = () => {
     const now = new Date();
+    console.log("NOW IS:", now);
     const consumptionLogEntry = {
       consumptionLogId: null,
       userId: this.state.userId,
@@ -114,6 +115,7 @@ class ConsumptionLog extends Component {
         return logEntry;
       }
     });
+    console.log("inisde setCurrentLogEntry, newLogEntry is:", newLogEntry);
     this.setState({
       currentLogEntry: newLogEntry[0],
       display: "logEntryForm"

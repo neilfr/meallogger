@@ -12,7 +12,7 @@ module.exports = {
             req.body.userId,
             req.body.foodId,
             req.body.quantity,
-            Moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss")
+            Moment.utc(req.body.logDate).format("YYYY-MM-DD HH:mm")
           ]
         }
       )
@@ -51,7 +51,10 @@ module.exports = {
           replacements: [req.params.userId]
         }
       )
-      .then(data => res.json(data))
+      .then(data => {
+        res.json(data);
+        console.log("data is:", data);
+      })
       .catch(err => res.status(422).json(err));
   },
   findAll: function(req, res) {

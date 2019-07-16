@@ -3,10 +3,9 @@ import "./style.css";
 import { DeleteBtn } from "../DeleteBtn";
 
 export function LogEntry(props) {
-  console.log("props is:", props);
+  console.log("Log Entry props are:", props);
   return (
     <div className="row">
-      {/* <li className="list-group-item col-10" onClick={props.setLogEntryClick}> */}
       <li className="list-group-item col-10" onClick={props.setCurrentLogEntry}>
         {props.logDate}
         <br />

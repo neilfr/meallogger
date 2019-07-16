@@ -42,7 +42,11 @@ export function LogList(props) {
               deleteConsumptionLogEntry={() => {
                 props.deleteConsumptionLogEntry(logEntry.consumptionLogId);
               }}
-              logDate={Moment(logEntry.logDate).format("YYYY-MM-DD hh:mm a")}
+              // moment.utc('2016-05-14T08:33:14-03:00').format()
+              logDate={Moment.utc(logEntry.logDate).format(
+                "YYYY-MM-DD hh:mm a"
+              )}
+              // logDate={logEntry.logDate}
               foodDescription={logEntry.foodDescription}
               quantity={logEntry.quantity}
               calories={(logEntry.calories * logEntry.quantity) / 100}
