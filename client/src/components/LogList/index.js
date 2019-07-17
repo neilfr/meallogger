@@ -43,6 +43,7 @@ export function LogList(props) {
                 props.deleteConsumptionLogEntry(logEntry.consumptionLogId);
               }}
               // moment.utc('2016-05-14T08:33:14-03:00').format()
+              // logDate={Moment.utc(logEntry.logDate).format(
               logDate={Moment.utc(logEntry.logDate).format(
                 "YYYY-MM-DD hh:mm a"
               )}

@@ -80,7 +80,7 @@ module.exports = {
           replacements: [
             req.body.foodId,
             req.body.quantity,
-            Moment(req.body.logDate).format("YYYY-MM-DD HH:mm:ss"),
+            Moment.utc(req.body.logDate).format("YYYY-MM-DD HH:mm:ss"),
             req.body.consumptionLogId
           ]
         }

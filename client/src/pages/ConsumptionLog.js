@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { FavouriteFoodSelectionList } from "../components/FavouriteFoodSelectionList";
 import { LogList } from "../components/LogList";
 import { LogEntryForm } from "../components/LogEntryForm";
+import Moment from "moment";
 
 class ConsumptionLog extends Component {
   state = {
@@ -21,7 +22,6 @@ class ConsumptionLog extends Component {
   loadConsumptionLog = () => {
     API.getConsumptionLogByUserId(this.state.userId)
       .then(res => {
-        console.log("response from getConsumptionLogByUserId:", res.data);
         this.setState({
           currentLogEntry: null,
           consumptionLog: res.data,
@@ -32,10 +32,8 @@ class ConsumptionLog extends Component {
   };
 
   loadFavouriteFoods = () => {
-    console.log("load favourite foods for user:", this.state.userId);
     API.getFavouriteFoodsByUserId(this.state.userId)
       .then(res => {
-        console.log("response from getFavouriteFoodsByUserId:", res.data);
         this.setState({ favouriteFoods: res.data });
       })
       .catch(err => console.log(err));
@@ -54,11 +52,6 @@ class ConsumptionLog extends Component {
         return favourite;
       }
     });
-    console.log(
-      "inside handleFavouriteFoodChange, selectedFavourite is:",
-      selectedFavourite[0]
-    );
-    console.log("this.state.currentLogEntry is:", this.state.currentLogEntry);
     const logEntry = this.state.currentLogEntry;
     logEntry.foodId = selectedFavourite[0].foodId;
     logEntry.foodDescription = selectedFavourite[0].foodDescription;
@@ -81,8 +74,7 @@ class ConsumptionLog extends Component {
   };
 
   addConsumptionLogEntry = () => {
-    const now = new Date();
-    console.log("NOW IS:", now);
+    const now = Moment().format("YYYY-MM-DD HH:mm");
     const consumptionLogEntry = {
       consumptionLogId: null,
       userId: this.state.userId,
@@ -115,7 +107,6 @@ class ConsumptionLog extends Component {
         return logEntry;
       }
     });
-    console.log("inisde setCurrentLogEntry, newLogEntry is:", newLogEntry);
     this.setState({
       currentLogEntry: newLogEntry[0],
       display: "logEntryForm"
